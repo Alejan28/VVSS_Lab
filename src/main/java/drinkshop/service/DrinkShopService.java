@@ -5,6 +5,7 @@ import drinkshop.export.CsvExporter;
 import drinkshop.receipt.ReceiptGenerator;
 import drinkshop.reports.DailyReportService;
 import drinkshop.repository.Repository;
+import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -14,19 +15,25 @@ public class DrinkShopService {
     private final OrderService orderService;
     private final RetetaService retetaService;
     private final StocService stocService;
+    private final TipBauturaService tipBauturaService;
+    private final CategorieBauturaService categorieBauturaService;
     private final DailyReportService report;
 
     public DrinkShopService(
             Repository<Integer, Product> productRepo,
-            Repository<Integer, Order> orderRepo,
+            Repository<Long, Order> orderRepo,
             Repository<Integer, Reteta> retetaRepo,
-            Repository<Integer, Stoc> stocService
+            Repository<Integer, Stoc> stocService,
+            Repository<Integer,TipBautura> tipBauturaRepository,
+            Repository<Integer,CategorieBautura> categorieBauturaRepository
     ) {
         this.productService = new ProductService(productRepo);
         this.orderService = new OrderService(orderRepo, productRepo);
         this.retetaService = new RetetaService(retetaRepo);
         this.stocService = new StocService(stocService);
         this.report = new DailyReportService(orderRepo);
+        this.tipBauturaService=new TipBauturaService(tipBauturaRepository);
+        this.categorieBauturaService=new CategorieBauturaService(categorieBauturaRepository);
     }
 
     // ---------- PRODUCT ----------
@@ -56,7 +63,16 @@ public class DrinkShopService {
 
     // ---------- ORDER ----------
     public void addOrder(Order o) {
+        try{
         orderService.addOrder(o);
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
+        }
     }
 
     public List<Order> getAllOrders() {
@@ -103,5 +119,19 @@ public class DrinkShopService {
 
     public void deleteReteta(int id) {
         retetaService.deleteReteta(id);
+    }
+
+    public void addDrinkType(TipBautura tip){
+        tipBauturaService.save(tip);
+    }
+
+    public void addDrinkCategory(CategorieBautura categorie){
+        categorieBauturaService.save(categorie);
+    }
+    public List<TipBautura> getAllTypes(){
+        return tipBauturaService.getAll();
+    }
+    public List<CategorieBautura> getAllCategories(){
+        return categorieBauturaService.getAll();
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileOrderRepository
-        extends FileAbstractRepository<Integer, Order> {
+        extends FileAbstractRepository<Long, Order> {
 
     private Repository<Integer, Product> productRepository;
 
@@ -17,10 +17,11 @@ public class FileOrderRepository
         super(fileName);
         this.productRepository = productRepository;
         loadFromFile();
+        Order.setCounter(entities.size()+1);
     }
 
     @Override
-    protected Integer getId(Order entity) {
+    protected Long getId(Order entity) {
         return entity.getId();
     }
 
@@ -30,7 +31,7 @@ public class FileOrderRepository
         // Format: id,productId:qty|productId:qty,total
         String[] parts = line.split(",");
 
-        int id = Integer.parseInt(parts[0]);
+        Long id = Long.parseLong(parts[0]);
 
         List<OrderItem> items = new ArrayList<>();
         String[] products = parts[1].split("\\|");
@@ -56,7 +57,7 @@ public class FileOrderRepository
 
         for (OrderItem item : entity.getItems()) {
 
-            if (sb.length() > 0) {
+            if (!sb.isEmpty()) {
                 sb.append("|");
             }
 

@@ -1,0 +1,354 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AbstractRepository<ID, E> {
+  # entities: Map<ID, E>
+  + findOne(ID): E
+  + findAll(): List<E>
+  + save(E): E
+  + update(E): E
+  + delete(ID): E
+  # getId(E): ID
+}
+enum CategorieBautura << enumeration >> {
+  + SMOOTHIE: 
+  + CLASSIC_COFFEE: 
+  + BUBBLE_TEA: 
+  + MILK_COFFEE: 
+  + TEA: 
+  + JUICE: 
+  + ICED_COFFEE: 
+  + ALL: 
+  + SPECIAL_COFFEE: 
+  + valueOf(String): CategorieBautura
+  + values(): CategorieBautura[]
+}
+class CsvExporter {
+  + exportOrders(List<Product>, List<Order>, String): void
+}
+class DailyReportService {
+  - repo: Repository<Integer, Order>
+  + getTotalOrders(): int
+  + getTotalRevenue(): double
+}
+class DrinkShopApp {
+  + start(Stage): void
+  + main(String[]): void
+}
+class DrinkShopController {
+  - currentOrderItems: ObservableList<OrderItem>
+  - service: DrinkShopService
+  - txtReceipt: TextArea
+  - lblTotalRevenue: Label
+  - colOrderProdName: TableColumn<OrderItem, String>
+  - colOrderQty: TableColumn<OrderItem, Integer>
+  - txtNewIngredCant: TextField
+  - colRetetaId: TableColumn<Reteta, Integer>
+  - colProdName: TableColumn<Product, String>
+  - lblOrderTotal: Label
+  - retetaList: ObservableList<Reteta>
+  - retetaTable: TableView<Reteta>
+  - colNewIngredName: TableColumn<IngredientReteta, String>
+  - newRetetaTable: TableView<IngredientReteta>
+  - colNewIngredCant: TableColumn<IngredientReteta, Double>
+  - currentOrderTable: TableView<OrderItem>
+  - colProdPrice: TableColumn<Product, Double>
+  - comboProdTip: ComboBox<TipBautura>
+  - colProdId: TableColumn<Product, Integer>
+  - txtProdName: TextField
+  - currentOrder: Order
+  - productTable: TableView<Product>
+  - txtNewIngredName: TextField
+  - comboProdCategorie: ComboBox<CategorieBautura>
+  - comboQty: ComboBox<Integer>
+  - productList: ObservableList<Product>
+  - txtProdPrice: TextField
+  - newRetetaList: ObservableList<IngredientReteta>
+  - colProdTip: TableColumn<Product, TipBautura>
+  - colRetetaDesc: TableColumn<Reteta, String>
+  - colProdCategorie: TableColumn<Product, CategorieBautura>
+  - initialize(): void
+  - onAddNewReteta(): void
+  - onDailyRevenue(): void
+  - onDeleteProduct(): void
+  - showError(String): void
+  - onAddOrderItem(): void
+  - onDeleteNewIngred(): void
+  - onUpdateProduct(): void
+  - onFilterTip(): void
+  - onAddProduct(): void
+  + setService(DrinkShopService): void
+  - onDeleteOrderItem(): void
+  - onFinalizeOrder(): void
+  - initData(): void
+  - onAddNewIngred(): void
+  - onClearNewRetetaIngredients(): void
+  - updateOrderTotal(): void
+  - onFilterCategorie(): void
+  - onExportOrdersCsv(): void
+}
+class DrinkShopService {
+  - retetaService: RetetaService
+  - report: DailyReportService
+  - productService: ProductService
+  - stocService: StocService
+  - orderService: OrderService
+  + filtreazaDupaTip(TipBautura): List<Product>
+  + updateReteta(Reteta): void
+  + addOrder(Order): void
+  + generateReceipt(Order): String
+  + addProduct(Product): void
+  + getAllProducts(): List<Product>
+  + filtreazaDupaCategorie(CategorieBautura): List<Product>
+  + getAllRetete(): List<Reteta>
+  + exportCsv(String): void
+  + deleteProduct(int): void
+  + deleteReteta(int): void
+  + getAllOrders(): List<Order>
+  + computeTotal(Order): double
+  + updateProduct(int, String, double, CategorieBautura, TipBautura): void
+  + getDailyRevenue(): double
+  + comandaProdus(Product): void
+  + addReteta(Reteta): void
+}
+class FileAbstractRepository<ID, E> {
+  # fileName: String
+  # createEntityAsString(E): String
+  # loadFromFile(): void
+  - writeToFile(): void
+  + delete(ID): E
+  + save(E): E
+  + update(E): E
+  # extractEntity(String): E
+}
+class FileOrderRepository {
+  - productRepository: Repository<Integer, Product>
+  # extractEntity(String): Order
+  # createEntityAsString(Order): String
+  # getId(Order): Integer
+}
+class FileProductRepository {
+  # extractEntity(String): Product
+  # createEntityAsString(Product): String
+  # getId(Product): Integer
+}
+class FileRetetaRepository {
+  # extractEntity(String): Reteta
+  # createEntityAsString(Reteta): String
+  # getId(Reteta): Integer
+}
+class FileStocRepository {
+  # createEntityAsString(Stoc): String
+  # getId(Stoc): Integer
+  # extractEntity(String): Stoc
+}
+class IngredientReteta {
+  - denumire: String
+  - cantitate: double
+  + getDenumire(): String
+  + toString(): String
+  + setDenumire(String): void
+  + getCantitate(): double
+  + setCantitate(double): void
+}
+class Order {
+  - items: List<OrderItem>
+  - totalPrice: double
+  - id: int
+  + getId(): int
+  + getItems(): List<OrderItem>
+  + toString(): String
+  + computeTotalPrice(): void
+  + getTotal(): double
+  + addItem(OrderItem): void
+  + setTotalPrice(double): void
+  + getTotalPrice(): double
+  + removeItem(OrderItem): void
+  + setItems(List<OrderItem>): void
+}
+class OrderItem {
+  - product: Product
+  - quantity: int
+  + setProduct(Product): void
+  + getQuantity(): int
+  + toString(): String
+  + getProduct(): Product
+  + setQuantity(int): void
+  + getTotal(): double
+}
+class OrderItemValidator {
+  + validate(OrderItem): void
+}
+class OrderService {
+  - productRepo: Repository<Integer, Product>
+  - orderRepo: Repository<Integer, Order>
+  + computeTotal(Order): double
+  + addItem(Order, OrderItem): void
+  + findById(int): Order
+  + deleteOrder(int): void
+  + addOrder(Order): void
+  + updateOrder(Order): void
+  + getAllOrders(): List<Order>
+  + removeItem(Order, OrderItem): void
+}
+class OrderValidator {
+  - itemValidator: OrderItemValidator
+  + validate(Order): void
+}
+class Product {
+  - tip: TipBautura
+  - id: int
+  - categorie: CategorieBautura
+  - pret: double
+  - nume: String
+  + getId(): int
+  + getTip(): TipBautura
+  + setPret(double): void
+  + getPret(): double
+  + setNume(String): void
+  + getCategorie(): CategorieBautura
+  + toString(): String
+  + setTip(TipBautura): void
+  + getNume(): String
+  + setCategorie(CategorieBautura): void
+}
+class ProductService {
+  - productRepo: Repository<Integer, Product>
+  + updateProduct(int, String, double, CategorieBautura, TipBautura): void
+  + filterByTip(TipBautura): List<Product>
+  + getAllProducts(): List<Product>
+  + filterByCategorie(CategorieBautura): List<Product>
+  + findById(int): Product
+  + addProduct(Product): void
+  + deleteProduct(int): void
+}
+class ProductTest {
+  ~ product: Product
+  ~ setTip(): void
+  ~ getCategorie(): void
+  ~ setCategorie(): void
+  ~ setNume(): void
+  ~ setPret(): void
+  ~ getId(): void
+  ~ setUp(): void
+  ~ testToString(): void
+  ~ tearDown(): void
+  ~ getPret(): void
+  ~ getTip(): void
+  ~ getNume(): void
+}
+class ProductValidator {
+  + validate(Product): void
+}
+class ReceiptGenerator {
+  + generate(Order, List<Product>): String
+}
+interface Repository<ID, E> << interface >> {
+  + save(E): E
+  + update(E): E
+  + findOne(ID): E
+  + findAll(): List<E>
+  + delete(ID): E
+}
+class Reteta {
+  - id: int
+  - ingrediente: List<IngredientReteta>
+  + getIngrediente(): List<IngredientReteta>
+  + setId(int): void
+  + getId(): int
+  + setIngrediente(List<IngredientReteta>): void
+  + toString(): String
+}
+class RetetaService {
+  - retetaRepo: Repository<Integer, Reteta>
+  + addReteta(Reteta): void
+  + deleteReteta(int): void
+  + updateReteta(Reteta): void
+  + getAll(): List<Reteta>
+  + findById(int): Reteta
+}
+class RetetaValidator {
+  + validate(Reteta): void
+}
+class Stoc {
+  - stocMinim: double
+  - cantitate: double
+  - id: int
+  - ingredient: String
+  + getId(): int
+  + isSubMinim(): boolean
+  + getStocMinim(): double
+  + setStocMinim(int): void
+  + toString(): String
+  + getIngredient(): String
+  + setIngredient(String): void
+  + setCantitate(double): void
+  + getCantitate(): double
+}
+class StocService {
+  - stocRepo: Repository<Integer, Stoc>
+  + areSuficient(Reteta): boolean
+  + update(Stoc): void
+  + add(Stoc): void
+  + getAll(): List<Stoc>
+  + delete(int): void
+  + consuma(Reteta): void
+}
+class StocValidator {
+  + validate(Stoc): void
+}
+enum TipBautura << enumeration >> {
+  + POWDER: 
+  + PLANT_BASED: 
+  + WATER_BASED: 
+  + ALL: 
+  + BASIC: 
+  + DAIRY: 
+  + LACTOSE_FREE: 
+  + values(): TipBautura[]
+  + valueOf(String): TipBautura
+}
+class ValidationException
+interface Validator<T> << interface >> {
+  + validate(T): void
+}
+
+AbstractRepository      -[#008200,dashed]-^  Repository             
+DailyReportService     "1" *-[#595959,plain]-> "repo\n1" Repository             
+DrinkShopController    "1" *-[#595959,plain]-> "service\n1" DrinkShopService       
+DrinkShopController    "1" *-[#595959,plain]-> "newRetetaList\n*" IngredientReteta       
+DrinkShopController    "1" *-[#595959,plain]-> "currentOrder\n1" Order                  
+DrinkShopController    "1" *-[#595959,plain]-> "currentOrderItems\n*" OrderItem              
+DrinkShopController    "1" *-[#595959,plain]-> "productList\n*" Product                
+DrinkShopController    "1" *-[#595959,plain]-> "retetaList\n*" Reteta                 
+DrinkShopService       "1" *-[#595959,plain]-> "report\n1" DailyReportService     
+DrinkShopService       "1" *-[#595959,plain]-> "orderService\n1" OrderService           
+DrinkShopService       "1" *-[#595959,plain]-> "productService\n1" ProductService         
+DrinkShopService       "1" *-[#595959,plain]-> "retetaService\n1" RetetaService          
+DrinkShopService       "1" *-[#595959,plain]-> "stocService\n1" StocService            
+FileAbstractRepository  -[#000082,plain]-^  AbstractRepository     
+FileOrderRepository     -[#000082,plain]-^  FileAbstractRepository 
+FileOrderRepository    "1" *-[#595959,plain]-> "productRepository\n1" Repository             
+FileProductRepository   -[#000082,plain]-^  FileAbstractRepository 
+FileRetetaRepository    -[#000082,plain]-^  FileAbstractRepository 
+FileStocRepository      -[#000082,plain]-^  FileAbstractRepository 
+Order                  "1" *-[#595959,plain]-> "items\n*" OrderItem              
+OrderItem              "1" *-[#595959,plain]-> "product\n1" Product                
+OrderItemValidator      -[#008200,dashed]-^  Validator              
+OrderService           "1" *-[#595959,plain]-> "orderRepo\n1" Repository             
+OrderValidator         "1" *-[#595959,plain]-> "itemValidator\n1" OrderItemValidator     
+OrderValidator          -[#008200,dashed]-^  Validator              
+Product                "1" *-[#595959,plain]-> "categorie\n1" CategorieBautura       
+Product                "1" *-[#595959,plain]-> "tip\n1" TipBautura             
+ProductService         "1" *-[#595959,plain]-> "productRepo\n1" Repository             
+ProductTest            "1" *-[#595959,plain]-> "product\n1" Product                
+ProductValidator        -[#008200,dashed]-^  Validator              
+Reteta                 "1" *-[#595959,plain]-> "ingrediente\n*" IngredientReteta       
+RetetaService          "1" *-[#595959,plain]-> "retetaRepo\n1" Repository             
+RetetaValidator         -[#008200,dashed]-^  Validator              
+StocService            "1" *-[#595959,plain]-> "stocRepo\n1" Repository             
+StocValidator           -[#008200,dashed]-^  Validator              
+@enduml

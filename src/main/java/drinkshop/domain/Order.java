@@ -6,23 +6,24 @@ import java.util.List;
 
 public class Order implements Serializable {
 
-    private int id;
+    private static int counter = 0;
+    private Long id;
     private List<OrderItem> items;
     private double totalPrice;
 
-    public Order(int id) {
+    public Order(Long id) {
         this.id = id;
         this.items = new ArrayList<>();
         this.totalPrice = 0.0;
     }
 
-    public Order(int id, List<OrderItem> items, double totalPrice) {
+    public Order(Long id, List<OrderItem> items, double totalPrice) {
         this.id = id;
         this.items = new ArrayList<>(items);
         this.totalPrice = totalPrice;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -59,11 +60,15 @@ public class Order implements Serializable {
                 '}';
     }
 
-    public double getTotal() {
-        return totalPrice;
-    }
 
     public void computeTotalPrice() {
         this.totalPrice=items.stream().mapToDouble(OrderItem::getTotal).sum();
+    }
+
+    public static void setCounter(int startValue) {
+        counter = startValue;
+    }
+    public static int getCounter() {
+        return counter;
     }
 }

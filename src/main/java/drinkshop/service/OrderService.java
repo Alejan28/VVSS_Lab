@@ -4,29 +4,44 @@ import drinkshop.domain.Order;
 import drinkshop.domain.OrderItem;
 import drinkshop.domain.Product;
 import drinkshop.repository.Repository;
+import drinkshop.service.validator.OrderValidator;
+import drinkshop.service.validator.Validator;
 
 import java.util.List;
 
 public class OrderService {
 
-    private final Repository<Integer, Order> orderRepo;
+    private final Repository<Long, Order> orderRepo;
     private final Repository<Integer, Product> productRepo;
+    private final Validator<Order> validator;
 
-    public OrderService(Repository<Integer, Order> orderRepo, Repository<Integer, Product> productRepo) {
+
+    public OrderService(Repository<Long, Order> orderRepo, Repository<Integer, Product> productRepo) {
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
 
+        validator = new OrderValidator();
     }
 
     public void addOrder(Order o) {
-        orderRepo.save(o);
+        if(orderRepo.findOne(o.getId())==null){
+            try{
+                validator.validate(o);
+                orderRepo.save(o);
+            }catch (Exception e){
+                throw new ServiceException(e.getMessage());
+            }
+
+        }else{
+            throw new ServiceException("Comanda cu id-ul "+o.getId()+" exista deja");
+        }
     }
 
     public void updateOrder(Order o) {
         orderRepo.update(o);
     }
 
-    public void deleteOrder(int id) {
+    public void deleteOrder(Long id) {
         orderRepo.delete(id);
     }
 
@@ -36,7 +51,7 @@ public class OrderService {
         return orderRepo.findAll();
     }
 
-    public Order findById(int id) {
+    public Order findById(Long id) {
         return orderRepo.findOne(id);
     }
 

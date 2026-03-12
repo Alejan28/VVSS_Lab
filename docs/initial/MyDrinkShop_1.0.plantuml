@@ -1,76 +1,291 @@
 @startuml
-
 !theme plain
 top to bottom direction
 skinparam linetype ortho
 
-class AbstractRepository<ID, E>
-enum CategorieBautura << enumeration >>
-class CsvExporter
-class DailyReportService
-class DrinkShopApp
-class DrinkShopController
-class DrinkShopService
-class FileAbstractRepository<ID, E>
-class FileOrderRepository
-class FileProductRepository
-class FileRetetaRepository
-class FileStocRepository
-class IngredientReteta
-class Order
-class OrderItem
-class OrderItemValidator
-class OrderService
-class OrderValidator
-class Product
-class ProductService
-class ProductTest
-class ProductValidator
-class ReceiptGenerator
-interface Repository<ID, E> << interface >>
-class Reteta
-class RetetaService
-class RetetaValidator
-class Stoc
-class StocService
-class StocValidator
-enum TipBautura << enumeration >>
-class ValidationException
-interface Validator<T> << interface >>
+package "com.drinkshop.domain" {
+    class Product{
+    -  id: Long;
+    -  name: String;
+    -  price: double;
+    -  categorie: CategorieBautura;
+    -  tip: TipBautura;
 
-AbstractRepository      -[#008200,dashed]-^  Repository             
-DailyReportService     "1" *-[#595959,plain]-> "repo\n1" Repository             
-DrinkShopController    "1" *-[#595959,plain]-> "service\n1" DrinkShopService       
-DrinkShopController    "1" *-[#595959,plain]-> "newRetetaList\n*" IngredientReteta       
-DrinkShopController    "1" *-[#595959,plain]-> "currentOrder\n1" Order                  
-DrinkShopController    "1" *-[#595959,plain]-> "currentOrderItems\n*" OrderItem              
-DrinkShopController    "1" *-[#595959,plain]-> "productList\n*" Product                
-DrinkShopController    "1" *-[#595959,plain]-> "retetaList\n*" Reteta                 
-DrinkShopService       "1" *-[#595959,plain]-> "report\n1" DailyReportService     
-DrinkShopService       "1" *-[#595959,plain]-> "orderService\n1" OrderService           
-DrinkShopService       "1" *-[#595959,plain]-> "productService\n1" ProductService         
-DrinkShopService       "1" *-[#595959,plain]-> "retetaService\n1" RetetaService          
-DrinkShopService       "1" *-[#595959,plain]-> "stocService\n1" StocService            
-FileAbstractRepository  -[#000082,plain]-^  AbstractRepository     
-FileOrderRepository     -[#000082,plain]-^  FileAbstractRepository 
-FileOrderRepository    "1" *-[#595959,plain]-> "productRepository\n1" Repository             
-FileProductRepository   -[#000082,plain]-^  FileAbstractRepository 
-FileRetetaRepository    -[#000082,plain]-^  FileAbstractRepository 
-FileStocRepository      -[#000082,plain]-^  FileAbstractRepository 
-Order                  "1" *-[#595959,plain]-> "items\n*" OrderItem              
-OrderItem              "1" *-[#595959,plain]-> "product\n1" Product                
-OrderItemValidator      -[#008200,dashed]-^  Validator              
-OrderService           "1" *-[#595959,plain]-> "orderRepo\n1" Repository             
-OrderValidator         "1" *-[#595959,plain]-> "itemValidator\n1" OrderItemValidator     
-OrderValidator          -[#008200,dashed]-^  Validator              
-Product                "1" *-[#595959,plain]-> "categorie\n1" CategorieBautura       
-Product                "1" *-[#595959,plain]-> "tip\n1" TipBautura             
-ProductService         "1" *-[#595959,plain]-> "productRepo\n1" Repository             
-ProductTest            "1" *-[#595959,plain]-> "product\n1" Product                
-ProductValidator        -[#008200,dashed]-^  Validator              
-Reteta                 "1" *-[#595959,plain]-> "ingrediente\n*" IngredientReteta       
-RetetaService          "1" *-[#595959,plain]-> "retetaRepo\n1" Repository             
-RetetaValidator         -[#008200,dashed]-^  Validator              
-StocService            "1" *-[#595959,plain]-> "stocRepo\n1" Repository             
-StocValidator           -[#008200,dashed]-^  Validator              
+    +  getId(): Long;
+    +  getName(): String;
+    +  setName(String name): void;
+    +  getPrice(): double;
+    +  setPrice(double price): void;
+    +  getCategorie(): CategorieBautura;
+    +  getTip(): TipBautura;
+    +  setCategorie(CategorieBautura categorie): void;
+    +  setTip(TipBautura tip): void;
+    }
+    class Order{
+    -  id: Long;
+    -  dateTime: LocalDateTime;
+    -  total: double;
+
+    +  addItem(OrderItem item): void;
+    +  removeItem(OrderItem item): void;
+    +  getItems(): List<OrderItem>;
+    +  calculateTotal(): double;
+    +  finalizeOrder(): void;
+    }
+    class OrderItem{
+        -  quantity: int;
+        - product: Product;
+
+        +  getProduct(): Product;
+        +  getQuantity(): int;
+        +  getSubtotal(): double;
+    }
+    class Reteta{
+        -  id: Long;
+
+        + void addIngredient(IngredientReteta ingredient): void;
+        + getIngrediente(): List<IngredientReteta>;
+    }
+    class IngredientReteta{
+        -  ingredientName: String;
+        -  quantity: double;
+
+        +  getIngredientName(): String;
+        +  getQuantity(): double;
+    }
+    class Stoc{
+        -  ingredientName: String;
+        -  availableQuantity: double;
+
+        +  increase(double qty): void;
+        +  decrease(double qty): void;
+        +  getAvailableQuantity(): double;
+    }
+    class CategorieBautura {
+        -  id: Long;
+        -  name: String;
+    }
+
+    class TipBautura {
+        -  id: Long;
+        -  name: String;
+    }
+}
+
+package "com.drinkshop.repository" {
+    interface Repository<ID, E> << interface >>{
+
+     findOne(id: ID) : E;
+     findAll(): Iterable<E>;
+     save(E entity): void;
+     delete(id : ID): void;
+     update(E entity): void;
+    }
+    abstract class AbstractRepository<ID, E>{
+        protected  entities: Map<ID, E>;
+
+        +  findOne( id: ID): E;
+        +  findAll(): Iterable<E>;
+        +  save( entity: E): void;
+        +  delete(id: ID): void;
+        +  update( entity: E): void;
+    }
+    abstract class FileAbstractRepository<ID, E>{
+        protected  fileName: String;
+
+        protected abstract  extractEntity( line: String): E;
+        protected abstract  createEntityAsString( entity: E): String;
+        protected  loadFromFile(): void;
+        protected  writeToFile(): void;
+    }
+    class FileOrderRepository
+    class FileTipBauturaRepository
+    class FileCategorieBauturaRepository
+    class FileProductRepository
+    class FileRetetaRepository
+    class FileStocRepository
+    class RepositoryException{
+
+        + RepositoryException( message: String);
+    }
+}
+
+package "com.drinkshop.validation" {
+    interface Validator<T> << interface >>
+    class TipBauturaValidator{
+        + validate(tipBautura: TipBautura): void;
+    }
+    class CategorieBauturaValidator{
+        + validate(CategorieBautura): void;
+    }
+    class OrderValidator{
+        +  validate( order: Order): void;
+    }
+    class OrderItemValidator{
+        +  validate( item: OrderItem): void;
+    }
+    class ProductValidator{
+        +  validate( product: Product): void;
+    }
+    class RetetaValidator{
+        +  validate( reteta: Reteta):void;
+    }
+    class StocValidator{
+        +  validate( stoc: Stoc): void;
+    }
+    class ValidationException{
+        + ValidationException( message: String);
+    }
+}
+
+package "com.drinkshop.service" {
+    class DrinkShopService{
+            + DrinkShopService(Repository<Long, Product>, Repository<Long, Order>, Repository <Long, Reteta>, Repository <Long, Stoc>, Repository <Long, TipBautura>, Repository<Long, CategorieBautura>):
+            + addReteta(Reteta): void
+            + filtreazaDupaCategorie(CategorieBautura): List<Product>
+            + addProduct(Product): void
+            + updateProduct(int, String, double, CategorieBautura, TipBautura): void
+            + computeTotal(Order): double
+            + comandaProdus(Product): void
+            + exportCsv(String): void
+            + updateReteta(Reteta): void
+            + addOrder(Order): void
+            + generateReceipt(Order): String
+            + filtreazaDupaTip(TipBautura): List <Product>
+            + deleteProduct(int): void
+            + deleteReteta(int): void
+    }
+    class OrderService{
+
+        +  createOrder(): Order;
+        +  addProductToOrder( order: Order,  product: Product,  quantity: int): void;
+        +  finalizeOrder( order: Order): void;
+    }
+    class ProductService{
+
+        +  addProduct(product: Product);
+        +  updateProduct(product: Product): void;
+        +  deleteProduct(id: Long): void;
+        +  getAllProducts(): Iterable<Product>;
+    }
+    class RetetaService{
+
+        +  addReteta( reteta: Reteta): void;
+        +  findByProduct( product: Product): Reteta;
+    }
+    class StocService{
+
+        +  updateStock( ingredient: String,  qty: double): void;
+        +  checkAvailability( reteta : Reteta,  quantity: int): boolean;
+        +  consumeIngredients( reteta: Reteta,  quantity: int): void;
+    }
+    class TipBauturaService{
+        + addDrinkType(tipBautura: TipBautura): void;
+        + deleteDrinkType(tipBautura: TipBautura): void;
+    }
+    class CategorieBauturaService{
+        + addDrinkCategory(categorieBautura: CategorieBautura): void;
+        + deleteDrinkCategory(categorieBautura: CategorieBautura): void;
+    }
+    class DailyReportService
+    class ServiceException{
+        +ServiceException( message : String)
+    }
+}
+
+package "com.drinkshop.ui" {
+    class DrinkShopController{
+            -service: DrinkShopService
+            + DrinkShopController():
+            + onAddNewIngred(): void
+            + initData(): void
+            + onDailyRevenue(): void
+            + onClearNewRetetaIngredients(): void
+            + onFinalizeOrder(): void
+            + initialize(): void
+            + showError(String): void
+            + onUpdateProduct(): void
+            + onFilterTip(): void
+            + onDeleteProduct(): void
+            + onAddNewReteta(): void
+            + onExportOrdersCsv(): void
+            + onFilterCategorie(): void
+            + onDeleteNewIngred(): void
+            + onAddProduct(): void
+            + onDeleteDrinkType(): void
+            + onAddDrinkType(): void
+            + onDeleteDrinkCategory(): void
+            + onAddDrinkCategory(): void
+            + updateOrderTotal(): void
+            + onAddOrderltem(): void
+            + onDeleteOrderitem(): void
+    }
+    class DrinkShopApp{
+
+    }
+}
+
+package "com.drinkshop.util" {
+    class CsvExporter
+    class ReceiptGenerator
+}
+
+
+FileAbstractRepository ..> RepositoryException : throws
+AbstractRepository ..> RepositoryException : throws
+
+OrderService ..> ServiceException : throws
+ProductService ..> ServiceException : throws
+RetetaService ..> ServiceException : throws
+StocService ..> ServiceException : throws
+TipBauturaService ..> ServiceException : throws
+CategorieBauturaService ..> ServiceException : throws
+
+DrinkShopApp           "1" -- "1" DrinkShopController : "instantiates & starts"
+
+DrinkShopController --> DrinkShopService
+
+AbstractRepository      -[#008200,dashed]-^  Repository
+FileAbstractRepository  -[#000082,plain]-^  AbstractRepository
+FileOrderRepository     -[#000082,plain]-^  FileAbstractRepository
+FileProductRepository   -[#000082,plain]-^  FileAbstractRepository
+FileRetetaRepository    -[#000082,plain]-^  FileAbstractRepository
+FileStocRepository      -[#000082,plain]-^  FileAbstractRepository
+FileTipBauturaRepository -[#000082,plain]-^  FileAbstractRepository
+FileCategorieBauturaRepository -[#000082,plain]-^  FileAbstractRepository
+
+OrderService           "1" *-[#595959,plain]-> "orderRepo\n1" Repository
+OrderService           "1" *-[#595959,plain]-> "validator\n1" OrderValidator
+ProductService         "1" *-[#595959,plain]-> "productRepo\n1" Repository
+ProductService         "1" *-[#595959,plain]-> "validator\n1" ProductValidator
+RetetaService          "1" *-[#595959,plain]-> "retetaRepo\n1" Repository
+RetetaService          "1" *-[#595959,plain]-> "validator\n1" RetetaValidator
+StocService            "1" *-[#595959,plain]-> "stocRepo\n1" Repository
+StocService            "1" *-[#595959,plain]-> "validator\n1" StocValidator
+TipBauturaService      "1" *-[#595959,plain]-> "validator\n1" TipBauturaValidator
+CategorieBauturaService "1" *-[#595959,plain]-> "validator\n1" CategorieBauturaValidator
+Order "1" *-- "*" OrderItem
+OrderItem "*" --> "1" Product
+Product --> CategorieBautura
+Product --> TipBautura
+Product "1" --> "0..1" Reteta
+Reteta "1" *-- "*" IngredientReteta
+
+OrderItemValidator      -[#008200,dashed]-^  Validator
+OrderValidator          -[#008200,dashed]-^  Validator
+OrderValidator         "1" *-[#595959,plain]-> "itemValidator\n1" OrderItemValidator
+ProductValidator        -[#008200,dashed]-^  Validator
+RetetaValidator         -[#008200,dashed]-^  Validator
+StocValidator           -[#008200,dashed]-^  Validator
+TipBauturaValidator     -[#008200,dashed]-^  Validator
+CategorieBauturaValidator -[#008200,dashed]-^  Validator
+
+DrinkShopController    "1" *-[#595959,plain]-> "service\n1" DrinkShopService
+DrinkShopService       "1" *-[#595959,plain]-> "orderService\n1" OrderService
+DrinkShopService       "1" *-[#595959,plain]-> "productService\n1" ProductService
+DrinkShopService       "1" *-[#595959,plain]-> "retetaService\n1" RetetaService
+DrinkShopService       "1" *-[#595959,plain]-> "stocService\n1" StocService
+DrinkShopService       "1" *-[#595959,plain]-> "report\n1" DailyReportService
+DrinkShopService --> CsvExporter
+DrinkShopService --> ReceiptGenerator
 @enduml

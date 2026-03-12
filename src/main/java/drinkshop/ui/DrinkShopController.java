@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 public class DrinkShopController {
 
+    @FXML private TextField txtCategory_Type;
     private DrinkShopService service;
 
     // ---------- PRODUCT ----------
@@ -52,8 +53,13 @@ public class DrinkShopController {
     private ObservableList<Reteta> retetaList = FXCollections.observableArrayList();
     private ObservableList<IngredientReteta> newRetetaList = FXCollections.observableArrayList();
     private ObservableList<OrderItem> currentOrderItems = FXCollections.observableArrayList();
+    private ObservableList<CategorieBautura> categories = FXCollections.observableArrayList();
+    private ObservableList<TipBautura> types = FXCollections.observableArrayList();
 
-    private Order currentOrder = new Order(1);
+
+    private Order currentOrder = new Order((long) (Order.getCounter()));
+    private TipBautura currentType= new TipBautura(TipBautura.getCounter());
+    private CategorieBautura currentCategory=new CategorieBautura(CategorieBautura.getCounter());
 
     public void setService(DrinkShopService service) {
         this.service = service;
@@ -70,9 +76,9 @@ public class DrinkShopController {
         colProdCategorie.setCellValueFactory(new PropertyValueFactory<>("categorie"));
         colProdTip.setCellValueFactory(new PropertyValueFactory<>("tip"));
         productTable.setItems(productList);
+        comboProdCategorie.setItems(categories);
+        comboProdTip.setItems(types);
 
-        comboProdCategorie.getItems().setAll(CategorieBautura.values());
-        comboProdTip.getItems().setAll(TipBautura.values());
 
         // RETETE
         colRetetaId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -104,8 +110,49 @@ public class DrinkShopController {
     private void initData() {
         productList.setAll(service.getAllProducts());
         retetaList.setAll(service.getAllRetete());
+        categories.setAll(service.getAllCategories());
+        types.setAll(service.getAllTypes());
         lblTotalRevenue.setText("Daily Revenue: " + service.getDailyRevenue());
         updateOrderTotal();
+    }
+    @FXML
+    private void onAddType() {
+        String newTypeName=txtCategory_Type.getText();
+        TipBautura drinkType=new TipBautura(currentType.getId(), newTypeName);
+        try{
+            service.addDrinkType(drinkType);
+            currentType= new TipBautura(currentType.getId()+1);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("INFO");
+            alert.setHeaderText("Type added successfully");
+            alert.showAndWait();
+            comboProdTip.getItems().add(drinkType);
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(e.getMessage());
+            alert.showAndWait();
+        }finally{
+            txtCategory_Type.clear();
+        }
+    }
+    @FXML
+    private void onAddCategory() {
+        String newCategoryName=txtCategory_Type.getText();
+        CategorieBautura drinkCategory=new CategorieBautura(currentCategory.getId(), newCategoryName);
+        try{
+            service.addDrinkCategory(drinkCategory);
+            currentCategory= new CategorieBautura(currentCategory.getId()+1);
+           comboProdCategorie.getItems().add(drinkCategory);
+
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(e.getMessage());
+            alert.showAndWait();
+        }finally {
+            txtCategory_Type.clear();
+        }
     }
 
     // ---------- PRODUCT ----------

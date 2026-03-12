@@ -2,6 +2,8 @@ package drinkshop.service;
 
 import drinkshop.domain.*;
 import drinkshop.repository.Repository;
+import drinkshop.service.validator.ProductValidator;
+import drinkshop.service.validator.Validator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,13 +11,25 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final Repository<Integer, Product> productRepo;
+    private Validator<Product> validator;
+
 
     public ProductService(Repository<Integer, Product> productRepo) {
         this.productRepo = productRepo;
+
+        validator= new ProductValidator();
     }
 
     public void addProduct(Product p) {
-        productRepo.save(p);
+        if(productRepo.findOne(p.getId())==null){
+        try{
+            validator.validate(p);
+            productRepo.save(p);
+        }catch (Exception e) {
+            throw new ServiceException(e.getMessage());
+        }}else{
+            throw new ServiceException("Produsul cu id-ul "+p.getId()+" exista deja");
+        }
     }
 
     public void updateProduct(int id, String name, double price, CategorieBautura categorie, TipBautura tip) {
@@ -28,13 +42,6 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-//        Iterable<Product> it=productRepo.findAll();
-//        ArrayList<Product> products=new ArrayList<>();
-//        it.forEach(products::add);
-//        return products;
-
-//        return StreamSupport.stream(productRepo.findAll().spliterator(), false)
-//                    .collect(Collectors.toList());
         return productRepo.findAll();
     }
 
@@ -43,16 +50,16 @@ public class ProductService {
     }
 
     public List<Product> filterByCategorie(CategorieBautura categorie) {
-        if (categorie == CategorieBautura.ALL) return getAllProducts();
+        if (categorie.getNume().equals("ALL")) return getAllProducts();
         return getAllProducts().stream()
-                .filter(p -> p.getCategorie() == categorie)
+                .filter(p -> p.getCategorie().getNume().equals(categorie.getNume()))
                 .collect(Collectors.toList());
     }
 
     public List<Product> filterByTip(TipBautura tip) {
-        if (tip == TipBautura.ALL) return getAllProducts();
+        if (tip.getNume().equals("ALL")) return getAllProducts();
         return getAllProducts().stream()
-                .filter(p -> p.getTip() == tip)
+                .filter(p -> p.getTip().getNume().equals(tip.getNume()))
                 .collect(Collectors.toList());
     }
 }

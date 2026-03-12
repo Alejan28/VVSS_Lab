@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class DailyReportService {
-    private Repository<Integer, Order> repo;
+    private Repository<Long, Order> repo;
 
-    public DailyReportService(Repository<Integer, Order> repo) {
+    public DailyReportService(Repository<Long, Order> repo) {
         this.repo = repo;
     }
 
