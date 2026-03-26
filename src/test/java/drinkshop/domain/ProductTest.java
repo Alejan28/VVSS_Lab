@@ -4,15 +4,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class ProductTest {
 
     Product product;
+    CategorieBautura categorie;
+    TipBautura tip;
+
 
     @BeforeEach
     void setUp() {
-        product =new Product(100, "Limonada", 10.0, CategorieBautura.JUICE, TipBautura.WATER_BASED);
+        categorie= new CategorieBautura(100, "JUICE");
+        tip = new TipBautura(100, "WATER_BASED");
+        product =new Product(100, "Limonada", 10.0,categorie,tip);
     }
 
     @AfterEach
@@ -37,24 +42,30 @@ class ProductTest {
 
     @Test
     void getCategorie() {
-        assert CategorieBautura.JUICE.equals(product.getCategorie());
+        assert categorie.getNume().equals(product.getCategorie().getNume());
+        assert categorie.getId().equals(product.getCategorie().getId());
     }
 
     @Test
     void setCategorie() {
-        product.setCategorie(CategorieBautura.SMOOTHIE);
-        assert CategorieBautura.SMOOTHIE.equals(product.getCategorie());
+        categorie.setNume("SMOOTHIE");
+        product.setCategorie(categorie);
+        assert categorie.getNume().equals(product.getCategorie().getNume());
+        assert categorie.getId().equals(product.getCategorie().getId());
     }
 
     @Test
     void getTip() {
-        assert TipBautura.WATER_BASED.equals(product.getTip());
+        assert tip.getNume().equals(product.getTip().getNume());
+        assert tip.getId().equals(product.getTip().getId());
     }
 
     @Test
     void setTip() {
-        product.setTip(TipBautura.BASIC);
-        assert TipBautura.BASIC.equals(product.getTip());
+        tip.setNume("BASIC");
+        product.setTip(tip);
+        assert tip.getNume().equals(product.getTip().getNume());
+        assert tip.getId().equals(product.getTip().getId());
     }
 
     @Test

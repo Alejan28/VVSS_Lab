@@ -15,6 +15,10 @@ public class ProductValidator implements Validator<Product> {
         if (product.getNume() == null || product.getNume().isBlank())
             errors += "Numele nu poate fi gol!\n";
 
+        if(product.getNume().length()>255)
+            errors += "Numele nu poate avea mai mult de 255 de caractere!\n";
+
+
         if (product.getPret() <= 0)
             errors += "Pret invalid!\n";
 

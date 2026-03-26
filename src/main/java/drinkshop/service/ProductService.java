@@ -32,6 +32,9 @@ public class ProductService {
         }
     }
 
+    public Product getProduct(int id){
+        return productRepo.findOne(id);
+    }
     public void updateProduct(int id, String name, double price, CategorieBautura categorie, TipBautura tip) {
         Product updated = new Product(id, name, price, categorie, tip);
         productRepo.update(updated);
