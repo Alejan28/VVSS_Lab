@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="drinkshop.domain.ProductTest" time="0.024" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="drinkshop.domain.ProductAddTest" time="0.198" tests="19" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -61,17 +61,23 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="getTip" classname="drinkshop.domain.ProductTest" time="0.002"/>
-  <testcase name="setCategorie" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="testToString" classname="drinkshop.domain.ProductTest" time="0.005">
-    <system-out><![CDATA[Limonada (JUICE, WATER_BASED) - 10.0 lei
-]]></system-out>
-  </testcase>
-  <testcase name="setTip" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="getNume" classname="drinkshop.domain.ProductTest" time="0.002"/>
-  <testcase name="getPret" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="getId" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="getCategorie" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="setNume" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="setPret" classname="drinkshop.domain.ProductTest" time="0.001"/>
+  <testcase name="addInvalidECP(String, double)[1]" classname="drinkshop.domain.ProductAddTest" time="0.051"/>
+  <testcase name="addInvalidECP(String, double)[2]" classname="drinkshop.domain.ProductAddTest" time="0.006"/>
+  <testcase name="addInvalidECP(String, double)[3]" classname="drinkshop.domain.ProductAddTest" time="0.004"/>
+  <testcase name="addValidProduct_BVA(String, double)[1]" classname="drinkshop.domain.ProductAddTest" time="0.007"/>
+  <testcase name="addValidProduct_BVA(String, double)[2]" classname="drinkshop.domain.ProductAddTest" time="0.003"/>
+  <testcase name="addValidProduct_BVA(String, double)[3]" classname="drinkshop.domain.ProductAddTest" time="0.005"/>
+  <testcase name="addValidProduct" classname="drinkshop.domain.ProductAddTest" time="0.007"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[1]" classname="drinkshop.domain.ProductAddTest" time="0.004"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[2]" classname="drinkshop.domain.ProductAddTest" time="0.003"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[3]" classname="drinkshop.domain.ProductAddTest" time="0.003"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[4]" classname="drinkshop.domain.ProductAddTest" time="0.003"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[5]" classname="drinkshop.domain.ProductAddTest" time="0.003"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[6]" classname="drinkshop.domain.ProductAddTest" time="0.002"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[7]" classname="drinkshop.domain.ProductAddTest" time="0.004"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[8]" classname="drinkshop.domain.ProductAddTest" time="0.004"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[9]" classname="drinkshop.domain.ProductAddTest" time="0.003"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[10]" classname="drinkshop.domain.ProductAddTest" time="0.002"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[11]" classname="drinkshop.domain.ProductAddTest" time="0.008"/>
+  <testcase name="addInvalidProduct_BVA(String, double)[12]" classname="drinkshop.domain.ProductAddTest" time="0.004"/>
 </testsuite>

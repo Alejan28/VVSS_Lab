@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>testspec Proiect236 - smir3624_WBT</title>
+<link type="text/css" rel="stylesheet" href="https://www.scs.ubbcluj.ro/testlink/gui/themes/default/css/tl_documents.css" />
+<style type="text/css" media="print">.notprintable { display:none;}</style>
+</head>
+<body>
+<div>
+<div style="float:right;">TestLink Community [configure $tlCfg-&gt;document_generator-&gt;company_name]</div>
+<div>&nbsp;</div><hr />
+<p style="text-align: center;"><img alt="TestLink logo" title="configure using $tlCfg->document_generator->company_logo"  width= height= src="https://www.scs.ubbcluj.ro/testlink/gui/themes/default/images/tl-logo-transparent-25.png" /></p></div>
+<div class="doc_title"><p>Test Specification</p></div>
+<div class="doc_title" style="text-align:left;margin: auto;"><p>Test Project: Proiect236<br/>Test Suite: Proiect236 - smir3624_WBT</p></div>
+<div class="summary"><p id="printedby">Printed by TestLink on 05/04/2026</p></div>
+<div class="pagefooter" id="copyright">2012 &copy; TestLink Community</div>
+<h1 class="general" style="page-break-before: always">Table Of Contents</h1><div class="toc"><p style="padding-left: 20px;"><b><a href="#toc_1">1.smir3624_WBT</a></b></p>
+<p style="padding-left: 45px;"><a href="#toc_tc29535">P236-33: TestCaseWBT_Valid_ValidareReteta</a></p><p style="padding-left: 45px;"><a href="#toc_tc29537">P236-34: TestCaseWBT_Invalid_ValidareReteta</a></p></div><h1 class="doclevel" >Scope</h1>
+<div class="txtlevel"><p>Proiect de testare pentru studentii din grupa 236.</p></div>
+ <br/><a name='toc_1'></a>
+<h1 class='doclevel'>1.Test Suite : smir3624_WBT</h1>
+<div><p>Se testează validare unei rețete</p>
+</div><a name="toc_tc29535"></a><p>&nbsp;</p><div> <table class="tc" width="90%" ><tr><th colspan="4">Test Case P236-33: TestCaseWBT_Valid_ValidareReteta&nbsp;<span style="font-size: 80%;">[Version  : 1]</span></th></tr>
+<tr><td width="20%" valign="top"><span class="label">Author:</span></td><td colspan="3">maria_salejan05</td></tr>
+<tr><td colspan="4"><span class="label">Summary:</span><br /><p>Se creeaza o noua reteta.</p>
+
+<p>id&gt;0</p>
+
+<p>ingrediente.length()&gt;0</p>
+
+<p>toate ingredientele sunt valide( cantitatea lor este mai mare decat 0).</p>
+
+<p>Se valideaza reteta.</p>
+
+<p>Validarea va avea succes, nu se va arunca o exceptie.</p>
+</td></tr><tr><td colspan="4"><span class="label">Preconditions:</span><br /><p>Sistemul este pornit și funcțional</p>
+
+<p>Funcționalitatea de validare a rețetei este disponibilă</p>
+
+<p>Există posibilitatea de a crea/introduce o rețetă pentru validare</p>
+</td></tr><tr><td width="20%" valign="top"><span class="label">Execution type:</span></td><td colspan="3">Automated</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Estimated exec. duration (min):</span></td><td colspan="3"></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Importance:</span></td><td colspan="3">Medium</td></tr>
+<tr><td colspan="4"></td></tr><tr><td > name of the autotest class:</td><td  colspan = "3" >Drinkshop.RecipeValidationTestClass</td></tr>
+<tr><td > name of the test method:</td><td  colspan = "3" >F02_TC09</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Requirements</span><td colspan="3">smir3624_F02:  ValidareaRetetei [Version : 1]<br /></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Keywords:</span></td><td colspan="3">&nbsp;None<br/></td></tr>
+</table>
+</div>
+<a name="toc_tc29537"></a><p>&nbsp;</p><div> <table class="tc" width="90%" ><tr><th colspan="4">Test Case P236-34: TestCaseWBT_Invalid_ValidareReteta&nbsp;<span style="font-size: 80%;">[Version  : 1]</span></th></tr>
+<tr><td width="20%" valign="top"><span class="label">Author:</span></td><td colspan="3">maria_salejan05</td></tr>
+<tr><td colspan="4"><span class="label">Summary:</span><br /><p>Se creeaza o noua reteta.</p>
+
+<p>id&lt;=0</p>
+
+<p>Lista de ingrediente este goala.</p>
+
+<p>Se valideaza reteta.</p>
+
+<p>In urma validarii se va arunca o exceptie cu mesajul &quot;Product ID invalid!\n Lista de ingrediente este goala\n&quot;</p>
+</td></tr><tr><td colspan="4"><span class="label">Preconditions:</span><br /><p>Sistemul este pornit și funcțional</p>
+
+<p>Funcționalitatea de validare a rețetei este disponibilă</p>
+
+<p>Există posibilitatea de a crea/introduce o rețetă pentru validare</p>
+</td></tr><tr><td width="20%" valign="top"><span class="label">Execution type:</span></td><td colspan="3">Automated</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Estimated exec. duration (min):</span></td><td colspan="3"></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Importance:</span></td><td colspan="3">Medium</td></tr>
+<tr><td colspan="4"></td></tr><tr><td > name of the autotest class:</td><td  colspan = "3" >Drinkshop.RecipeValidationTestClass</td></tr>
+<tr><td > name of the test method:</td><td  colspan = "3" >F02_TC06</td></tr>
+<tr><td width="20%" valign="top"><span class="label">Requirements</span><td colspan="3">smir3624_F02:  ValidareaRetetei [Version : 1]<br /></td></tr>
+<tr><td width="20%" valign="top"><span class="label">Keywords:</span></td><td colspan="3">&nbsp;None<br/></td></tr>
+</table>
+</div>
+
+</body>
+</html>
