@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: drinkshop.domain.ProductAddTest
 -------------------------------------------------------------------------------
-Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.198 s -- in drinkshop.domain.ProductAddTest
+Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.208 s -- in drinkshop.domain.ProductAddTest

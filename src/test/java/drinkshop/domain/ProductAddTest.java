@@ -6,11 +6,6 @@ import drinkshop.repository.file.FileProductRepository;
 import drinkshop.repository.file.FileTipBauturaRepository;
 import drinkshop.service.ProductService;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,8 +38,6 @@ class ProductAddTest {
         } catch (Exception ignored) {}
     }
 
-
-
     void assertValid(String nume, double pret) throws Exception {
         product.setNume(nume);
         product.setPret(pret);
@@ -64,7 +57,7 @@ class ProductAddTest {
                 () -> service.addProduct(product));
     }
 
-
+    // ---------------- VALID ----------------
 
     @Test
     @DisplayName("TC_1 - produs valid")
@@ -72,58 +65,78 @@ class ProductAddTest {
         assertValid("preparat rece", 13);
     }
 
+    // ---------------- ECP INVALID ----------------
 
-
-    static Stream<Arguments> invalidECPCases() {
-        return Stream.of(
-                Arguments.of("preparat rece", -13.0),   // TC_2
-                Arguments.of("", 13.0),                 // TC_8
-                Arguments.of("", -14.99)                // TC_9
-        );
+    @Test
+    @DisplayName("TC_2 - pret negativ")
+    void addInvalidECP_TC2() {
+        assertInvalid("preparat rece", -13.0);
     }
 
-    @ParameterizedTest(name = "Invalid basic: nume={0}, pret={1}")
-    @MethodSource("invalidECPCases")
-    void addInvalidECP(String nume, double pret) {
-        assertInvalid(nume, pret);
+    @Test
+    @DisplayName("TC_8 - nume gol")
+    void addInvalidProduct() {
+        assertInvalid("", 13.0);
     }
 
-
-    static Stream<Arguments> bvaInvalidCases() {
-        return Stream.of(
-                Arguments.of("", -0.01),          // TC1_BVA
-                Arguments.of("", 0.0),            // TC2_BVA
-                Arguments.of("", 0.01),           // TC3_BVA
-                Arguments.of("A", -0.01),         // TC7_BVA
-                Arguments.of("A", 0.0),           // TC8_BVA
-                Arguments.of("a".repeat(255), -0.01), // TC10_BVA
-                Arguments.of("a".repeat(255), 0.0),   // TC11_BVA
-                Arguments.of("a".repeat(254), -0.01), // TC13_BVA
-                Arguments.of("a".repeat(254), 0.0),   // TC14_BVA
-                Arguments.of("a".repeat(256), -0.01), // TC16_BVA
-                Arguments.of("a".repeat(256), 0.0),   // TC17_BVA
-                Arguments.of("a".repeat(256), 0.01)   // TC18_BVA
-        );
+    @Test
+    @DisplayName("TC_9 - nume gol + pret negativ")
+    void addInvalidECP_TC9() {
+        assertInvalid("", -14.99);
     }
 
-    @ParameterizedTest(name = "BVA invalid: nume length={0}, pret={1}")
-    @MethodSource("bvaInvalidCases")
-    void addInvalidProduct_BVA(String nume, double pret) {
-        assertInvalid(nume, pret);
+    // ---------------- BVA INVALID ----------------
+
+    @Test
+    void addInvalidProductBVA() { assertInvalid("", -0.01); }
+
+    @Test
+    void addInvalidProduct_BVA_TC2() { assertInvalid("", 0.0); }
+
+    @Test
+    void addInvalidProduct_BVA_TC3() { assertInvalid("", 0.01); }
+
+    @Test
+    void addInvalidProduct_BVA_TC7() { assertInvalid("A", -0.01); }
+
+    @Test
+    void addInvalidProduct_BVA_TC8() { assertInvalid("A", 0.0); }
+
+    @Test
+    void addInvalidProduct_BVA_TC10() { assertInvalid("a".repeat(255), -0.01); }
+
+    @Test
+    void addInvalidProduct_BVA_TC11() { assertInvalid("a".repeat(255), 0.0); }
+
+    @Test
+    void addInvalidProduct_BVA_TC13() { assertInvalid("a".repeat(254), -0.01); }
+
+    @Test
+    void addInvalidProduct_BVA_TC14() { assertInvalid("a".repeat(254), 0.0); }
+
+    @Test
+    void addInvalidProduct_BVA_TC16() { assertInvalid("a".repeat(256), -0.01); }
+
+    @Test
+    void addInvalidProduct_BVA_TC17() { assertInvalid("a".repeat(256), 0.0); }
+
+    @Test
+    void addInvalidProduct_BVA_TC18() { assertInvalid("a".repeat(256), 0.01); }
+
+    // ---------------- BVA VALID ----------------
+
+    @Test
+    void addValidProductBVA() throws Exception {
+        assertValid("A", 0.01);
     }
 
-
-    static Stream<Arguments> bvaValidCases() {
-        return Stream.of(
-                Arguments.of("A", 0.01),                // TC9_BVA
-                Arguments.of("a".repeat(255), 0.01),   // TC12_BVA
-                Arguments.of("a".repeat(254), 0.01)    // TC15_BVA
-        );
+    @Test
+    void addValidProduct_BVA_TC12() throws Exception {
+        assertValid("a".repeat(255), 0.01);
     }
 
-    @ParameterizedTest(name = "BVA valid: nume length={0}, pret={1}")
-    @MethodSource("bvaValidCases")
-    void addValidProduct_BVA(String nume, double pret) throws Exception {
-        assertValid(nume, pret);
+    @Test
+    void addValidProduct_BVA_TC15() throws Exception {
+        assertValid("a".repeat(254), 0.01);
     }
 }

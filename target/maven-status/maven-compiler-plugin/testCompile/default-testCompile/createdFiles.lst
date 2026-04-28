@@ -1,3 +1,6 @@
+drinkshop\service\ProductServiceIntegrationETest.class
+drinkshop\service\ProductServiceIntegrationRTest.class
+drinkshop\service\ProductServiceUnitTest.class
 drinkshop\domain\ProductAddTest.class
 drinkshop\RecipeValidationTestClass.class
 drinkshop\domain\ProductTest.class

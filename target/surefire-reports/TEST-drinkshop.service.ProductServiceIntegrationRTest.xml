@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="drinkshop.domain.ProductTest" time="0.055" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="drinkshop.service.ProductServiceIntegrationRTest" time="0.138" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -61,17 +61,6 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="getTip" classname="drinkshop.domain.ProductTest" time="0.002"/>
-  <testcase name="setCategorie" classname="drinkshop.domain.ProductTest" time="0.002"/>
-  <testcase name="testToString" classname="drinkshop.domain.ProductTest" time="0.012">
-    <system-out><![CDATA[Limonada (JUICE, WATER_BASED) - 10.0 lei
-]]></system-out>
-  </testcase>
-  <testcase name="setTip" classname="drinkshop.domain.ProductTest" time="0.002"/>
-  <testcase name="getNume" classname="drinkshop.domain.ProductTest" time="0.001"/>
-  <testcase name="getPret" classname="drinkshop.domain.ProductTest" time="0.003"/>
-  <testcase name="getId" classname="drinkshop.domain.ProductTest" time="0.002"/>
-  <testcase name="getCategorie" classname="drinkshop.domain.ProductTest" time="0.003"/>
-  <testcase name="setNume" classname="drinkshop.domain.ProductTest" time="0.006"/>
-  <testcase name="setPret" classname="drinkshop.domain.ProductTest" time="0.003"/>
+  <testcase name="testAddProduct_DuplicateId_Integration" classname="drinkshop.service.ProductServiceIntegrationRTest" time="0.111"/>
+  <testcase name="testAddProduct_Integration_WithRealRepo" classname="drinkshop.service.ProductServiceIntegrationRTest" time="0.022"/>
 </testsuite>
